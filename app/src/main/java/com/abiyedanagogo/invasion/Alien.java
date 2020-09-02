@@ -10,8 +10,8 @@ import static com.abiyedanagogo.invasion.GameView.screenRatioY;
 
 public class Alien {
 
-    public int speed = 20;
-    public boolean wasShot = true;
+    private int speed = 20;
+    private boolean wasShot = true;
     int x = 0, y, width, height, alienCounter = 1;
     Bitmap alien1, alien2, alien3, alien4;
 
@@ -55,8 +55,24 @@ public class Alien {
         alienCounter = 1;
         return alien4;
     }
-//freee
+
     Rect getCollisionShape() {
         return new Rect((int) (x+(30/screenRatioX)), y, x+ width, y + height);
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public boolean isWasShot() {
+        return wasShot;
+    }
+
+    public void setWasShot(boolean wasShot) {
+        this.wasShot = wasShot;
     }
 }
