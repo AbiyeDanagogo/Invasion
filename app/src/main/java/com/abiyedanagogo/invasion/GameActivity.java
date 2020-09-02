@@ -15,6 +15,10 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
+/*
+ * Created by Abiye Danagogo on 17/05/2020.
+ * */
+
 public class GameActivity extends AppCompatActivity {
 
     private GameView gameView;
