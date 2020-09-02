@@ -18,8 +18,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class GameView extends SurfaceView implements Runnable {
+/*
+ * Created by Abiye Danagogo on 17/05/2020.
+ * The GameView class extends the SurfaceView. The SurfaceView provides a dedicated drawing surface. This allows us to
+ * draw all of our images for the game. The class also implements the Runnable interface which allows the resources to be run as a thread
+ * using its run method.
+ * */
 
+public class GameView extends SurfaceView implements Runnable {
     public static float screenRatioX, screenRatioY;
 
     private Thread thread;
@@ -32,7 +38,7 @@ public class GameView extends SurfaceView implements Runnable {
     private SoundPool soundPool;
     private int sound, soundHit, soundExplosion;
     private List<Bullet> bullets;
-    private Flight flight;
+    private Rocket rocket;
     private GameActivity activity;
     private Background background1, background2;
     private boolean playMode;
@@ -41,11 +47,10 @@ public class GameView extends SurfaceView implements Runnable {
 
     public GameView(GameActivity activity, int screenX, int screenY) {
         super(activity);
-
         this.activity = activity;
-
         prefs = activity.getSharedPreferences("game", Context.MODE_PRIVATE);
 
+        //This checks which version of android the device is running and depending on which it runs code to create the soundpool
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             AudioAttributes audioAttributes = new AudioAttributes.Builder()
                     .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
@@ -69,10 +74,8 @@ public class GameView extends SurfaceView implements Runnable {
 
         background1 = new Background(screenX, screenY, getResources());
         background2 = new Background(screenX, screenY, getResources());
-
         pauseMenu = new PauseMenu(getResources());
-
-        flight = new Flight(this,screenY, getResources());
+        rocket = new Rocket(this,screenY, getResources());
 
         bullets = new ArrayList<>();
 
@@ -88,15 +91,15 @@ public class GameView extends SurfaceView implements Runnable {
             aliens[i] = alien;
 
         }
-
         random = new Random();
-
         playMode = true;
-
         speedIncrease = 0;
-
     }
 
+    /*
+     * The run method is from the Runnable interface and continuously calls the update, draw and sleep methods
+     * while the boolean isPlaying is true.
+     * */
     @Override
     public void run() {
         while (isPlaying) {
@@ -104,7 +107,6 @@ public class GameView extends SurfaceView implements Runnable {
             draw();
             sleep();
         }
-
     }
 
     private void update() {
@@ -118,19 +120,19 @@ public class GameView extends SurfaceView implements Runnable {
         if (background2.x + background2.background.getWidth() < 0) {
             background2.x = screenX;
         }
-        if (flight.isGoingUp) {
-            flight.y -= 30 / screenRatioY;
+        if (rocket.isGoingUp) {
+            rocket.y -= 30 / screenRatioY;
         }
-        if (flight.isGoingDown){
-            flight.y += 30 / screenRatioY;
+        if (rocket.isGoingDown){
+            rocket.y += 30 / screenRatioY;
         }
 
 
-        if (flight.y < 0){
-            flight.y = 0;
+        if (rocket.y < 0){
+            rocket.y = 0;
         }
-        if (flight.y > screenY - flight.height){
-            flight.y = screenY - flight.height;
+        if (rocket.y > screenY - rocket.height){
+            rocket.y = screenY - rocket.height;
         }
 
         List<Bullet> trash = new ArrayList<>();
@@ -156,8 +158,6 @@ public class GameView extends SurfaceView implements Runnable {
         for (Bullet bullet : trash) {
             bullets.remove(bullet);
         }
-
-
 
         for (Alien alien: aliens) {
             alien.x -= alien.getSpeed();
@@ -191,7 +191,7 @@ public class GameView extends SurfaceView implements Runnable {
                 alien.setWasShot(false);
             }
 
-            if (Rect.intersects(alien.getCollisionShape(), flight.getCollisionShape())) {
+            if (Rect.intersects(alien.getCollisionShape(), rocket.getCollisionShape())) {
                 isGameOver = true;
                 return;
             }
@@ -203,29 +203,22 @@ public class GameView extends SurfaceView implements Runnable {
         if (getHolder().getSurface().isValid()) {
             Canvas canvas = getHolder().lockCanvas();
 
-
             canvas.drawBitmap(background1.background, 0, 0, paint);
             canvas.drawBitmap(background2.background, screenX/2f, 0, paint);
-
             canvas.drawBitmap(background1.background, background1.x, background1.y, paint);
             canvas.drawBitmap(background2.background, background2.x, background2.y, paint);
-
-
 
             for (Alien alien : aliens){
                 canvas.drawBitmap(alien.getAlien(), alien.x, alien.y, paint);
             }
 
-
             canvas.drawText(String.valueOf(score), screenX / 2f, 164, paint);
             canvas.drawText("Pause", (4*screenX)/5f, screenY/5f, paint);
-
-
 
             if (isGameOver) {
                 isPlaying = false;
                 hitRocket();
-                canvas.drawBitmap(flight.getDead(), flight.x, flight.y, paint);
+                canvas.drawBitmap(rocket.getDead(), rocket.x, rocket.y, paint);
                 canvas.drawBitmap(pauseMenu.gameover, (screenX - pauseMenu.menuWidth)/2f,(screenY-pauseMenu.menuHeight)/2f, paint );
                 getHolder().unlockCanvasAndPost(canvas);
                 saveIfHighScore();
@@ -233,12 +226,7 @@ public class GameView extends SurfaceView implements Runnable {
                 return;
             }
 
-
-
-
-            canvas.drawBitmap(flight.getFlight(), flight.x, flight.y, paint);
-
-
+            canvas.drawBitmap(rocket.getFlight(), rocket.x, rocket.y, paint);
 
             for (Bullet bullet : bullets) {
                 canvas.drawBitmap(bullet.bullet, bullet.x, bullet.y, paint);
@@ -250,7 +238,6 @@ public class GameView extends SurfaceView implements Runnable {
             canvas.drawBitmap(pauseMenu.upArrow, 164/screenRatioX, screenY/9f, paint);
             canvas.drawBitmap(pauseMenu.downArrow, 164/screenRatioX, screenY-(screenY/9f)-pauseMenu.arrowHeight, paint);
             paint.setColor(Color.WHITE);
-
             getHolder().unlockCanvasAndPost(canvas);
         }
 
@@ -292,7 +279,6 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void pause() {
         try {
-
             isPlaying = false;
             Canvas canvas = getHolder().lockCanvas();
             canvas.drawBitmap(background1.background, 0, 0, paint);
@@ -310,22 +296,21 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             if ((event.getX() < screenX/2f) && (event.getY() < screenY/2f)) {
-                flight.isGoingUp = true;
+                rocket.isGoingUp = true;
             }
             else if ((event.getX() < screenX/2f) && (event.getY() > screenY/2f)) {
-                flight.isGoingDown = true;
+                rocket.isGoingDown = true;
             }
         }
 
         if (event.getAction() == MotionEvent.ACTION_UP) {
-            flight.isGoingUp = false;
-            flight.isGoingDown = false;
+            rocket.isGoingUp = false;
+            rocket.isGoingDown = false;
 
             if ((event.getX() > screenX/2f) && (event.getY() > screenY/5f) && playMode){
-                flight.toShoot++;
+                rocket.toShoot++;
             }
 
             else if (!playMode && (event.getX() > screenX/2f) && (event.getX() < (screenX/2f)+pauseMenu.quitWidth) && (event.getY() > (screenY/2f)+pauseMenu.quitHeight) && (event.getY() < (screenY/2f)+pauseMenu.quitHeight+pauseMenu.quitHeight)) {
@@ -364,10 +349,9 @@ public class GameView extends SurfaceView implements Runnable {
         if (prefs.getBoolean("sound", true)) {
             soundPool.play(sound, 1,1,0,0,1);
         }
-
         Bullet bullet = new Bullet(getResources());
-        bullet.x = flight.x + flight.width;
-        bullet.y = flight.y + (flight.height / 3);
+        bullet.x = rocket.x + rocket.width;
+        bullet.y = rocket.y + (rocket.height / 3);
         bullets.add(bullet);
     }
 }

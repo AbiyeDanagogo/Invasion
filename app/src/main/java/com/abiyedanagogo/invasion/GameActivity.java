@@ -17,6 +17,7 @@ import com.google.android.gms.ads.initialization.OnInitializationCompleteListene
 
 /*
  * Created by Abiye Danagogo on 17/05/2020.
+ * This class uses the GameView Class to display the game
  * */
 
 public class GameActivity extends AppCompatActivity {
@@ -27,29 +28,22 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
+        //The interstitial ad is initialized
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
-
             }
         });
-
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
         Point point = new Point();
         getWindowManager().getDefaultDisplay().getSize(point);
-
         gameView = new GameView(this, point.x, point.y);
-
-
-        //Log.d("abiyeisamanwho", "onCreate: "+width + " next "+ height);
-
         setContentView(gameView);
     }
 
@@ -65,6 +59,8 @@ public class GameActivity extends AppCompatActivity {
         gameView.resume();
     }
 
+    //The onDestroy method is called whenever the activity is finished
+    //An ad is displayed whenever the onDestroy method is called
     @Override
     protected void onDestroy() {
         super.onDestroy();
