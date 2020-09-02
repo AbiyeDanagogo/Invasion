@@ -7,6 +7,11 @@ import android.graphics.Rect;
 
 import static com.abiyedanagogo.invasion.GameView.screenRatioX;
 
+/*
+ * Created by Abiye Danagogo on 17/05/2020.
+ * The bullets that are being fired by the rocket are in itialised in this class
+ * */
+
 public class Bullet {
     int x, y, width, height;
     Bitmap bullet;

@@ -7,6 +7,11 @@ import android.graphics.BitmapFactory;
 import static com.abiyedanagogo.invasion.GameView.screenRatioX;
 import static com.abiyedanagogo.invasion.GameView.screenRatioY;
 
+/*
+ * Created by Abiye Danagogo on 17/05/2020.
+ * This class is responible for initializing the pause menu and its resources
+ * */
+
 public class PauseMenu {
     int menuWidth, menuHeight, quitWidth, quitHeight, arrowHeight, arrowWidth, crossHeight, crossWidth;
     Bitmap menu, quit, gameover, upArrow, downArrow, cross;

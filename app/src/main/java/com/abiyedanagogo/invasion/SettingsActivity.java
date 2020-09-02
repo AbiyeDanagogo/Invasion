@@ -10,6 +10,11 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/*
+ * Created by Abiye Danagogo on 17/05/2020.
+ * This activity displays the settings of the game
+ * */
+
 public class SettingsActivity extends AppCompatActivity {
 
     private boolean soundToggle;

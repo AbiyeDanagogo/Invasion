@@ -8,6 +8,11 @@ import android.graphics.Rect;
 import static com.abiyedanagogo.invasion.GameView.screenRatioX;
 import static com.abiyedanagogo.invasion.GameView.screenRatioY;
 
+/*
+ * Created by Abiye Danagogo on 17/05/2020.
+ * This gets the image resources for the Aliens which are the enemies in the game
+ * */
+
 public class Alien {
 
     private int speed = 20;

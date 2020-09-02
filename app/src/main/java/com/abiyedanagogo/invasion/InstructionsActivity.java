@@ -7,6 +7,11 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+/*
+ * Created by Abiye Danagogo on 17/05/2020.
+ * This activity displays the instructions of the game
+ * */
+
 public class InstructionsActivity extends AppCompatActivity {
 
     @Override

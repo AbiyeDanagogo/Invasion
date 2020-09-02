@@ -8,8 +8,12 @@ import android.graphics.Rect;
 import static com.abiyedanagogo.invasion.GameView.screenRatioX;
 import static com.abiyedanagogo.invasion.GameView.screenRatioY;
 
-public class Rocket {
+/*
+ * Created by Abiye Danagogo on 17/05/2020.
+ * This class gets the image resources for the rocket.
+ * */
 
+public class Rocket {
     public boolean isGoingUp = false, isGoingDown = false;
     int toShoot = 0;
     int x, y, width, height, wingCounter = 0, shootCounter = 1;
