@@ -8,7 +8,7 @@ import android.graphics.Rect;
 import static com.abiyedanagogo.invasion.GameView.screenRatioX;
 import static com.abiyedanagogo.invasion.GameView.screenRatioY;
 
-public class Flight {
+public class Rocket {
 
     public boolean isGoingUp = false, isGoingDown = false;
     int toShoot = 0;
@@ -17,7 +17,7 @@ public class Flight {
     private GameView gameView;
 
 
-    Flight(GameView gameView,int screenY, Resources resources) {
+    Rocket(GameView gameView, int screenY, Resources resources) {
         this.gameView = gameView;
 
         flight1 = BitmapFactory.decodeResource(resources, R.drawable.rocket1);
