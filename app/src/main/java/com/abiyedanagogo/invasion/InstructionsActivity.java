@@ -30,6 +30,9 @@ public class InstructionsActivity extends AppCompatActivity {
         });
     }
 
+    /*
+     * This stops the navigation buttons from displaying to improve the full screen experience
+     * */
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);

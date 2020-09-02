@@ -78,6 +78,5 @@ public class PauseMenu {
         crossWidth = (int) (crossWidth / screenRatioX);
 
         cross = Bitmap.createScaledBitmap(cross, crossHeight, crossHeight, false);
-
     }
 }

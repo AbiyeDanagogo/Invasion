@@ -109,6 +109,10 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
+    /*
+    * The update method is called repeatedly while the game is running.
+    * It represents everything dynamic in our game and shows all changes in the game
+    * */
     private void update() {
         background1.x -= 10 / screenRatioX;
         background2.x -= 10 / screenRatioX;
@@ -145,7 +149,7 @@ public class GameView extends SurfaceView implements Runnable {
 
             for (Alien alien : aliens) {
                 if (Rect.intersects(alien.getCollisionShape(), bullet.getCollisionShape())) {
-                    hitAlien();
+                    hitAlienSound();
                     score++;
                     alien.x = -500;
                     bullet.x = screenX + 500;
@@ -199,6 +203,9 @@ public class GameView extends SurfaceView implements Runnable {
 
     }
 
+    /*
+     * This method renders all the sprites, backgrounds and everything that is displayed while the game is running
+     * */
     private void draw() {
         if (getHolder().getSurface().isValid()) {
             Canvas canvas = getHolder().lockCanvas();
@@ -217,7 +224,7 @@ public class GameView extends SurfaceView implements Runnable {
 
             if (isGameOver) {
                 isPlaying = false;
-                hitRocket();
+                hitRocketSound();
                 canvas.drawBitmap(rocket.getDead(), rocket.x, rocket.y, paint);
                 canvas.drawBitmap(pauseMenu.gameover, (screenX - pauseMenu.menuWidth)/2f,(screenY-pauseMenu.menuHeight)/2f, paint );
                 getHolder().unlockCanvasAndPost(canvas);
@@ -226,7 +233,7 @@ public class GameView extends SurfaceView implements Runnable {
                 return;
             }
 
-            canvas.drawBitmap(rocket.getFlight(), rocket.x, rocket.y, paint);
+            canvas.drawBitmap(rocket.getRocket(), rocket.x, rocket.y, paint);
 
             for (Bullet bullet : bullets) {
                 canvas.drawBitmap(bullet.bullet, bullet.x, bullet.y, paint);
@@ -253,6 +260,9 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
+    /*
+     * This method runs after the game is over and checks if the score is a highscore and saves if if it is.
+     * */
     private void saveIfHighScore() {
         if (prefs.getInt("highscore", 0) < score) {
             SharedPreferences.Editor editor = prefs.edit();
@@ -269,14 +279,18 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-
-
+    /*
+     * When this method is called it resumes the game if it is paused.
+     * */
     public void resume() {
         isPlaying = true;
         thread = new Thread(this);
         thread.start();
     }
 
+    /*
+     * This method pauses the game and displays the pause menu.
+     * */
     public void pause() {
         try {
             isPlaying = false;
@@ -293,6 +307,9 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
+    /*
+     * This method handles different touch events and our game responds differently depending on the touch event
+     * */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
@@ -326,25 +343,32 @@ public class GameView extends SurfaceView implements Runnable {
                 }
                 playMode = !playMode;
             }
-
         }
-
         return true;
     }
 
-    public void hitRocket() {
+    /*
+     * This method runs whenever the rocket is hit and plays the hit sound if sound is set to on.
+     * */
+    public void hitRocketSound() {
         if (prefs.getBoolean("sound", true)) {
             soundPool.play(soundExplosion, 1,1,1,0,1);
         }
     }
 
-
-    public void hitAlien() {
+    /*
+     * This method runs when an alien is hit and plays the hit sound if sound is set to on
+     * */
+    public void hitAlienSound() {
         if (prefs.getBoolean("sound", true)) {
             soundPool.play(soundHit, 1,1,0,0,1);
         }
     }
 
+    /*
+     * This method adds a new bullet to the bullets array so that the bullet can be fired.
+     * It also plays the sound of the bullet if sound is set to on.
+     * */
     public void newBullet() {
         if (prefs.getBoolean("sound", true)) {
             soundPool.play(sound, 1,1,0,0,1);

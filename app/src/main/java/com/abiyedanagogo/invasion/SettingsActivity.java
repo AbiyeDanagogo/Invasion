@@ -30,7 +30,6 @@ public class SettingsActivity extends AppCompatActivity {
         final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
 
         soundToggle = prefs.getBoolean("sound", true);
-
         final ImageView volumeCtrl = findViewById(R.id.volumeCtrl);
 
         if (soundToggle){
@@ -50,16 +49,13 @@ public class SettingsActivity extends AppCompatActivity {
                 else {
                     volumeCtrl.setImageResource(R.drawable.ic_volume_off_black_24dp);
                 }
-
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putBoolean("sound", soundToggle);
                 editor.apply();
             }
         });
 
-
         musicToggle = prefs.getBoolean("music", true);
-
         final ImageView musicCtrl = findViewById(R.id.musicCtrl);
 
         if (musicToggle){
@@ -108,6 +104,9 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    /*
+    * This stops the navigation buttons from displaying to improve the full screen experience
+    * */
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);

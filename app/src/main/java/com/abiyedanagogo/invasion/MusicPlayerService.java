@@ -11,10 +11,7 @@ import androidx.annotation.Nullable;
  * Created by Abiye Danagogo on 17/05/2020.
  * The MusicPlayerService is responsible for playing the music while the application is running
  * */
-
 public class MusicPlayerService extends Service {
-
-    public static final String TAG = null;
     MediaPlayer player;
 
     @Nullable

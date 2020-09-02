@@ -32,6 +32,9 @@ public class Bullet {
 
     }
 
+    /*
+     * A rectangle is created around the sprite to detect collisions.
+     * */
     Rect getCollisionShape() {
         return new Rect(x, y, x+ width, y + height);
     }

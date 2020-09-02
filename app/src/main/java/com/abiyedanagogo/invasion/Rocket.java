@@ -59,7 +59,10 @@ public class Rocket {
 
     }
 
-    Bitmap getFlight() {
+    /*
+     * This method returns a animation frame of the rocket when called
+     * */
+    public Bitmap getRocket() {
 
         if (toShoot != 0){
             if (shootCounter == 1) {
@@ -98,6 +101,9 @@ public class Rocket {
         return rocket2;
     }
 
+    /*
+     * A rectangle is created around the sprite to detect collisions.
+     * */
     Rect getCollisionShape() {
         return new Rect(x, y, x+ width, y + height);
     }

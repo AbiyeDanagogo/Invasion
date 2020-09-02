@@ -14,7 +14,6 @@ import static com.abiyedanagogo.invasion.GameView.screenRatioY;
  * */
 
 public class Alien {
-
     private int speed = 20;
     private boolean wasShot = true;
     int x = 0, y, width, height, alienCounter = 1;
@@ -43,7 +42,10 @@ public class Alien {
         y = -height;
     }
 
-    Bitmap getAlien() {
+    /*
+     * This method returns an animation frame of the alien
+     * */
+    public Bitmap getAlien() {
         if (alienCounter == 1) {
             alienCounter++;
             return alien1;
@@ -61,22 +63,29 @@ public class Alien {
         return alien4;
     }
 
+    /*
+     * A rectangle is created around the sprite to detect collisions.
+     * */
     Rect getCollisionShape() {
         return new Rect((int) (x+(30/screenRatioX)), y, x+ width, y + height);
     }
 
+    //This getter returns the speed of the alien.
     public int getSpeed() {
         return speed;
     }
 
+    //This setter is used to set the speed of the alien.
     public void setSpeed(int speed) {
         this.speed = speed;
     }
 
+    //Returns the boolean wasShot.
     public boolean isWasShot() {
         return wasShot;
     }
 
+    //Sets the value of the boolean wasShot.
     public void setWasShot(boolean wasShot) {
         this.wasShot = wasShot;
     }
