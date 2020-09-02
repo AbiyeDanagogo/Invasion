@@ -55,7 +55,7 @@ public class Bird {
         birdCounter = 1;
         return bird4;
     }
-
+//freee
     Rect getCollisionShape() {
         return new Rect((int) (x+(30/screenRatioX)), y, x+ width, y + height);
     }
