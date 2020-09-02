@@ -20,14 +20,13 @@ import java.util.Random;
 
 public class GameView extends SurfaceView implements Runnable {
 
-
     public static float screenRatioX, screenRatioY;
 
     private Thread thread;
     private boolean isPlaying, isGameOver = false;
     private int screenX, screenY, score = 0;
     private Paint paint;
-    private Bird[] birds;
+    private Alien[] aliens;
     private SharedPreferences prefs;
     private Random random;
     private SoundPool soundPool;
@@ -83,10 +82,10 @@ public class GameView extends SurfaceView implements Runnable {
         paint.setTextSize(128 / screenRatioX);
         paint.setColor(Color.WHITE);
 
-        birds = new Bird[4];
+        aliens = new Alien[4];
         for (int i = 0; i < 4; i++) {
-            Bird bird = new Bird(getResources());
-            birds[i] = bird;
+            Alien alien = new Alien(getResources());
+            aliens[i] = alien;
 
         }
 
@@ -133,7 +132,7 @@ public class GameView extends SurfaceView implements Runnable {
         if (flight.y > screenY - flight.height){
             flight.y = screenY - flight.height;
         }
-        ;
+
         List<Bullet> trash = new ArrayList<>();
 
         for (Bullet bullet : bullets) {
@@ -142,13 +141,13 @@ public class GameView extends SurfaceView implements Runnable {
             }
             bullet.x += 50 / screenRatioX;
 
-            for (Bird bird : birds) {
-                if (Rect.intersects(bird.getCollisionShape(), bullet.getCollisionShape())) {
+            for (Alien alien : aliens) {
+                if (Rect.intersects(alien.getCollisionShape(), bullet.getCollisionShape())) {
                     hitAlien();
                     score++;
-                    bird.x = -500;
+                    alien.x = -500;
                     bullet.x = screenX + 500;
-                    bird.wasShot = true;
+                    alien.setWasShot(true);
                 }
             }
 
@@ -160,12 +159,12 @@ public class GameView extends SurfaceView implements Runnable {
 
 
 
-        for (Bird bird: birds) {
-            bird.x -= bird.speed;
+        for (Alien alien: aliens) {
+            alien.x -= alien.getSpeed();
 
-            if (bird.x + bird.width < 0) {
+            if (alien.x + alien.width < 0) {
 
-                if (!bird.wasShot) {
+                if (!alien.isWasShot()) {
                     isGameOver = true;
                     return;
                 }
@@ -179,20 +178,20 @@ public class GameView extends SurfaceView implements Runnable {
 
 
                 int bound = (int) (20 / screenRatioX);
-                bird.speed = (random.nextInt(bound)) + ((speedIncrease/6));
-                //bird.speed = random.nextInt(bound);
+                alien.setSpeed((random.nextInt(bound)) + ((speedIncrease/6)));
+                //alien.speed = random.nextInt(bound);
 
-                if (bird.speed < 5 / screenRatioX) {
-                    bird.speed = (int) (5 / screenRatioX);
+                if (alien.getSpeed() < 5 / screenRatioX) {
+                    alien.setSpeed((int) (5 / screenRatioX));
                 }
-                bird.x = screenX;
-                bird.y = random.nextInt(screenY - bird.height);
+                alien.x = screenX;
+                alien.y = random.nextInt(screenY - alien.height);
 
 
-                bird.wasShot = false;
+                alien.setWasShot(false);
             }
 
-            if (Rect.intersects(bird.getCollisionShape(), flight.getCollisionShape())) {
+            if (Rect.intersects(alien.getCollisionShape(), flight.getCollisionShape())) {
                 isGameOver = true;
                 return;
             }
@@ -213,8 +212,8 @@ public class GameView extends SurfaceView implements Runnable {
 
 
 
-            for (Bird bird : birds){
-                canvas.drawBitmap(bird.getBird(), bird.x, bird.y, paint);
+            for (Alien alien : aliens){
+                canvas.drawBitmap(alien.getAlien(), alien.x, alien.y, paint);
             }
 
 
@@ -313,10 +312,10 @@ public class GameView extends SurfaceView implements Runnable {
 
 
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            if ((event.getX() < screenX/2) && (event.getY() < screenY/2)) {
+            if ((event.getX() < screenX/2f) && (event.getY() < screenY/2f)) {
                 flight.isGoingUp = true;
             }
-            else if ((event.getX() < screenX/2) && (event.getY() > screenY/2)) {
+            else if ((event.getX() < screenX/2f) && (event.getY() > screenY/2f)) {
                 flight.isGoingDown = true;
             }
         }
