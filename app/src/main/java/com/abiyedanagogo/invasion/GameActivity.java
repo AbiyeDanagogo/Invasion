@@ -59,8 +59,10 @@ public class GameActivity extends AppCompatActivity {
         gameView.resume();
     }
 
-    //The onDestroy method is called whenever the activity is finished
-    //An ad is displayed whenever the onDestroy method is called
+    /*
+    * The onDestroy method is called whenever the activity is finished
+    * An ad is displayed whenever the onDestroy method is called
+    * */
     @Override
     protected void onDestroy() {
         super.onDestroy();
